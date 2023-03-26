@@ -1,7 +1,10 @@
 import Loading from "@/components/Loading";
 import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 export default function Home() {
+	const router = useRouter();
 	const [fullName, setFullName] = useState("");
 	const [currentPosition, setCurrentPosition] = useState("");
 	const [currentLength, setCurrentLength] = useState(1);
@@ -12,13 +15,22 @@ export default function Home() {
 
 	const handleFormSubmit = (e) => {
 		e.preventDefault();
-		console.log({
-			fullName,
-			currentPosition,
-			currentLength,
-			currentTechnologies,
-			headshot,
-		});
+
+		const formData = new FormData();
+		formData.append("headshotImage", headshot, headshot.name);
+		formData.append("fullName", fullName);
+		formData.append("currentPosition", currentPosition);
+		formData.append("currentLength", currentLength);
+		formData.append("currentTechnologies", currentTechnologies);
+		formData.append("workHistory", JSON.stringify(companyInfo));
+		axios
+			.post("http://localhost:5000/resume/create", formData, {})
+			.then((res) => {
+				if (res.data.message) {
+					router.push(`/resume`);
+				}
+			})
+			.catch((err) => console.error(err));
 		setLoading(true);
 	};
 

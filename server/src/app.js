@@ -2,12 +2,14 @@ const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
+const { v4: uuidv4 } = require("uuid");
 const app = express();
 
-const { Configuration, OpenAIApi } = require("openai");
+let finalResume = {};
 
+const { Configuration, OpenAIApi } = require("openai");
 const configuration = new Configuration({
-	apiKey: process.env.API_KEY,
+	apiKey: "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",
 });
 
 const openai = new OpenAIApi(configuration);
@@ -29,17 +31,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
-app.get("/api", (req, res) => {
-	res.json({
-		message: "Hello world",
-	});
-});
-
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static("src/uploads"));
 
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
-		cb(null, "uploads");
+		cb(null, "src/uploads");
 	},
 	filename: (req, file, cb) => {
 		cb(null, Date.now() + path.extname(file.originalname));
@@ -49,6 +45,10 @@ const storage = multer.diskStorage({
 const upload = multer({
 	storage: storage,
 	limits: { fileSize: 1024 * 1024 * 5 },
+});
+
+app.get("/resume", (req, res) => {
+	res.json(finalResume);
 });
 
 app.post("/resume/create", upload.single("headshotImage"), async (req, res) => {
@@ -64,9 +64,9 @@ app.post("/resume/create", upload.single("headshotImage"), async (req, res) => {
 
 	//👇🏻 group the values into an object
 	const newEntry = {
-		id: generateID(),
+		id: uuidv4(),
 		fullName,
-		image_url: `http://localhost:4000/uploads/${req.file.filename}`,
+		image_url: `http://localhost:5000/uploads/${req.file.filename}`,
 		currentPosition,
 		currentLength,
 		currentTechnologies,
@@ -105,7 +105,10 @@ app.post("/resume/create", upload.single("headshotImage"), async (req, res) => {
 	console.log(chatgptData);
 
 	const data = { ...newEntry, ...chatgptData };
-	database.push(data);
+	finalResume = {
+		message: "Request successful!",
+		data,
+	};
 
 	res.json({
 		message: "Request successful!",
