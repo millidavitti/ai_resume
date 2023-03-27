@@ -23,7 +23,7 @@ h3 {
 	margin: 15px 0;
 }
 button {
-	padding: 15px;
+	padding: 10px;
 	cursor: pointer;
 	outline: none;
 	background-color: #5d3891;
@@ -32,6 +32,8 @@ button {
 	font-size: 16px;
 	font-weight: bold;
 	border-radius: 3px;
+	margin: 10px 0;
+	margin-top: 0;
 }
 .app {
 	min-height: 100vh;
@@ -44,19 +46,21 @@ button {
 .app > p {
 	margin-bottom: 30px;
 }
-.nestedContainer {
+
+.flexContainer {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
-	justify-content: space-between;
+	gap: 10px;
 	width: 100%;
 }
+
 .companies {
 	display: flex;
 	flex-direction: column;
-	width: 39%;
 }
 .currentInput {
-	width: 95%;
+	width: 100%;
 }
 #photo {
 	width: 50%;
@@ -108,4 +112,9 @@ button {
 .resumeBodyContent {
 	text-align: justify;
 	margin-bottom: 30px;
+}
+
+.btn__group,
+.companies {
+	flex-basis: 150px;
 }

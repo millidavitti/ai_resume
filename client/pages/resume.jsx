@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useRef } from "react";
 import ErrorPage from "./ErrorPage";
+import { useReactToPrint } from "react-to-print";
 
 export default function Resume({ result }) {
 	const componentRef = useRef();
-	console.log(result);
+
 	const replaceWithBr = (string) => {
 		return string?.replace(/\n/g, "<br />");
 	};
@@ -12,7 +13,12 @@ export default function Resume({ result }) {
 	if (JSON.stringify(result) === "{}") {
 		return <ErrorPage />;
 	}
-	const handlePrint = () => alert("Printing...");
+	const handlePrint = useReactToPrint({
+		content: () => componentRef.current,
+		documentTitle: `${result.fullName} Resume`,
+		onAfterPrint: () => alert("Print Successful!"),
+	});
+
 	return (
 		<>
 			<button onClick={handlePrint}>Print Page</button>

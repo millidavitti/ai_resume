@@ -65,6 +65,7 @@ export default function Home() {
 				method='POST'
 				encType='multipart/form-data'
 			>
+				{/* Full Name */}
 				<label htmlFor='fullName'>Enter your full name</label>
 				<input
 					type='text'
@@ -74,7 +75,10 @@ export default function Home() {
 					value={fullName}
 					onChange={(e) => setFullName(e.target.value)}
 				/>
-				<div className='nestedContainer'>
+
+				{/* Current Work Place */}
+				<div className='flexContainer'>
+					{/* Current Role */}
 					<div>
 						<label htmlFor='currentPosition'>Current Position</label>
 						<input
@@ -86,6 +90,8 @@ export default function Home() {
 							onChange={(e) => setCurrentPosition(e.target.value)}
 						/>
 					</div>
+
+					{/* Role Duration */}
 					<div>
 						<label htmlFor='currentLength'>For how long? (year)</label>
 						<input
@@ -97,6 +103,8 @@ export default function Home() {
 							onChange={(e) => setCurrentLength(e.target.value)}
 						/>
 					</div>
+
+					{/* Technologies Used */}
 					<div>
 						<label htmlFor='currentTechnologies'>Technologies used</label>
 						<input
@@ -109,6 +117,8 @@ export default function Home() {
 						/>
 					</div>
 				</div>
+
+				{/* Upload Image */}
 				<label htmlFor='photo'>Upload your headshot image</label>
 				<input
 					type='file'
@@ -118,8 +128,11 @@ export default function Home() {
 					accept='image/x-png,image/jpeg'
 					onChange={(e) => setHeadshot(e.target.files[0])}
 				/>
+
+				{/* Previous Positions */}
 				{companyInfo.map((company, index) => (
-					<div className='nestedContainer' key={index}>
+					<div className='flexContainer' key={index}>
+						{/* Company Name */}
 						<div className='companies'>
 							<label htmlFor='name'>Company Name</label>
 							<input
@@ -129,6 +142,8 @@ export default function Home() {
 								onChange={(e) => handleUpdateCompany(e, index)}
 							/>
 						</div>
+
+						{/* Job Role */}
 						<div className='companies'>
 							<label htmlFor='position'>Position Held</label>
 							<input

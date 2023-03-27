@@ -3,13 +3,14 @@ const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
 const { v4: uuidv4 } = require("uuid");
+
 const app = express();
 
 let finalResume = {};
 
 const { Configuration, OpenAIApi } = require("openai");
 const configuration = new Configuration({
-	apiKey: "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",
+	apiKey: process.env.API_KEY,
 });
 
 const openai = new OpenAIApi(configuration);
@@ -100,9 +101,6 @@ app.post("/resume/create", upload.single("headshotImage"), async (req, res) => {
 
 	//👇🏻 put them into an object
 	const chatgptData = { objective, keypoints, jobResponsibilities };
-
-	//👇🏻log the result
-	console.log(chatgptData);
 
 	const data = { ...newEntry, ...chatgptData };
 	finalResume = {
