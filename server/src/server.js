@@ -1,6 +1,5 @@
 require("dotenv").config();
 
-console.log(process.env.API_KEY);
 const http = require("http");
 
 const app = require("./app");
