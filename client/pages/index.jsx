@@ -24,7 +24,7 @@ export default function Home() {
 		formData.append("currentTechnologies", currentTechnologies);
 		formData.append("workHistory", JSON.stringify(companyInfo));
 		axios
-			.post("http://localhost:5000/resume/create", formData, {})
+			.post(`${process.env.NEXT_PUBLIC_API_URL}/resume/create`, formData, {})
 			.then((res) => {
 				if (res.data.message) {
 					router.push(`/resume`);
