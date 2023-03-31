@@ -85,7 +85,9 @@ export default function Resume({ result }) {
 }
 
 export async function getServerSideProps() {
-	const { data: result } = await axios.get("http://localhost:5000/resume");
+	const { data: result } = await axios.get(
+		`${process.env.NEXT_PUBLIC_API_URL}/resume`,
+	);
 	return {
 		props: {
 			result: result.data,
