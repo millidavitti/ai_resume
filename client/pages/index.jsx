@@ -13,6 +13,8 @@ export default function Home() {
 	const [loading, setLoading] = useState(false);
 	const [companyInfo, setCompanyInfo] = useState([{ name: "", position: "" }]);
 
+	console.log(headshot);
+
 	const handleFormSubmit = (e) => {
 		e.preventDefault();
 
@@ -23,6 +25,7 @@ export default function Home() {
 		formData.append("currentLength", currentLength);
 		formData.append("currentTechnologies", currentTechnologies);
 		formData.append("workHistory", JSON.stringify(companyInfo));
+
 		axios
 			.post(`${process.env.NEXT_PUBLIC_API_URL}/resume/create`, formData, {})
 			.then((res) => {
@@ -60,6 +63,7 @@ export default function Home() {
 		<div className='app'>
 			<h1>Resume Builder</h1>
 			<p>Generate a resume with ChatGPT in few seconds</p>
+
 			<form
 				onSubmit={handleFormSubmit}
 				method='POST'

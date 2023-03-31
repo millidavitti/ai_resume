@@ -2,9 +2,18 @@ const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
+const cloudinary = require("cloudinary").v2;
 const { v4: uuidv4 } = require("uuid");
 
 const app = express();
+
+cloudinary.config({
+	cloud_name: "torch-cms-media",
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET,
+	secure: true,
+});
 
 let finalResume = {};
 
@@ -61,13 +70,16 @@ app.post("/resume/create", upload.single("headshotImage"), async (req, res) => {
 		workHistory,
 	} = req.body;
 
+	// upload Inmage from here on
+	const result = await cloudinary.uploader.upload(req.file.path);
+
 	const workArray = JSON.parse(workHistory); //an array
 
 	//👇🏻 group the values into an object
 	const newEntry = {
 		id: uuidv4(),
 		fullName,
-		image_url: `${process.env.API_URL}/uploads/${req.file.filename}`,
+		image_url: result.url,
 		currentPosition,
 		currentLength,
 		currentTechnologies,
@@ -108,6 +120,12 @@ app.post("/resume/create", upload.single("headshotImage"), async (req, res) => {
 		data,
 	};
 
+	const files = fs.readdirSync(req.file.destination);
+
+	for (const file of files) {
+		const filePath = path.join(req.file.destination, file);
+		fs.unlinkSync(filePath);
+	}
 	res.json({
 		message: "Request successful!",
 		data,
